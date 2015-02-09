@@ -2,14 +2,16 @@
 Contributors: flyplugins
 Donate link: http://flyplugins.com/donate
 Tags: fly plugins,MemberSonic,wp courseware,wpcourseware,lms,lms for wordpress,learning management system,online ecourse,ecourse,flyplugins,wordpress learning management system
-Requires at least: 3.0
-Tested up to: 3.6.1
-Stable tag: 1.1
+Requires at least: 3.7
+Tested up to: 4.1
+Stable tag: 1.2
+License: GPLv3
+License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 This plugin adds integration between MemberSonic and WP Courseware which allows you to assign course(s) to products for auto enrollment.
 
 == Description ==
-[Fly Plugins](http://flyplugins.com) presents [MemberSonic](http://flyplugins.com/membersonic) for [WP Courseware](http://www.wpcourseware.com).
+[Fly Plugins](http://flyplugins.com) presents [MemberSonic](http://flyplugins.com/membersonic) for [WP Courseware](http://wpcourseware.com).
 
 = Have you ever wanted to sell an online internet course or ecourse? =
 The MemberSonic Addon for WP Courseware will add full integration with WP Courseware. It will allow you to assign WP Courseware courses to a product. Once the course(s) are assigned to a product, upon purchase of a product and registration, a student will automatically be enrolled into the associated courses.
@@ -17,7 +19,7 @@ The MemberSonic Addon for WP Courseware will add full integration with WP Course
 With this addon, you will be able to create a fully automated LMS system which you can sell online, or if you choose to run a free online course, you can do so with ease.
 
 = MemberSonicship Plugin Integration with WP Courseware Plugin =
-[youtube http://www.youtube.com/watch?v=Re3gSxn_dxI]
+[youtube http://www.youtube.com/watch?v=20plVQm5InY]
 
 = Basic Configuration Steps =
 1. Create a course with WP Courseware and add module(s), unit(s), and quiz(zes)
@@ -25,7 +27,7 @@ With this addon, you will be able to create a fully automated LMS system which y
 3. Create a course outline page using [shortcode]
 4. Create a product and set a price
 5. Associate one or more WP Courseware courses with the product
-6. New users pay for the course through the shopping cart integration of your choice, the membership plugin assigns them WP user access and assigns them to the product for which they paid, and WP Courseware assigns them to the appropriate course(s) based on the product
+6. New student pays for the product, and WP Courseware enrolls them to the appropriate course(s) based on purchased product
 
 = Check out Fly Plugins =
 For more info about Fly Plugins Free and Premium Plugins, check out the following links:
@@ -57,7 +59,7 @@ Yes!
 
 = Where can I get WP Courseware? =
 
-Click here to get the [Best WordPress LMS Plugin](http://www.wpcourseware.com).
+Click here to get the [Best WordPress LMS Plugin](http://wpcourseware.com).
 
 = Where can I get MemberSonic? =
 
@@ -70,6 +72,9 @@ Click here to get [MemberSonic](http://flyplugins.com/membersonic).
 2. This is the actual configuration screen where you can select courses that will be associated with a particular product
 
 == Changelog ==
+
+= 1.1 =
+* New: Added ability to retroactively enroll students when a course is added to product that already exists.
 
 = 1.0 =
 * Initial release

@@ -1,27 +1,13 @@
 <?php
 /*
  * Plugin Name: WP Courseware - Membersonic Add On
- * Version: 1.1
+ * Version: 1.2
  * Plugin URI: http://flyplugins.com
  * Description: The official extension for <strong>WP Courseware</strong> to add support for the <strong>Membersonic membership plugin</strong> for WordPress.
  * Author: Fly Plugins
  * Author URI: http://flyplugins.com
  */
-/*
- Copyright 2013 Fly Plugins - Evolution Media Services, LLC
 
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
- */
 
 
 // Main parent class
@@ -34,7 +20,7 @@ add_action('init', 'WPCW_membersonic_init', 1);
 
 
 /**
- * Initialise the membership plugin, only loaded if WP Courseware 
+ * Initialize the membership plugin, only loaded if WP Courseware 
  * exists and is loading correctly.
  */
 function WPCW_membersonic_init()
@@ -66,21 +52,17 @@ function WPCW_membersonic_init()
 class WPCW_membersonic extends WPCW_Members
 {
 	const GLUE_VERSION  	= 1.00; 
-	const EXTENSION_NAME 	= 'Membersonic';
+	const EXTENSION_NAME 	= 'MemberSonic';
 	const EXTENSION_ID 		= 'WPCW_membersonic';
-	
-	
 	
 	/**
 	 * Main constructor for this class.
 	 */
 	function __construct()
 	{
-		// Initialise using the parent constructor 
+		// Initialize using the parent constructor 
 		parent::__construct(WPCW_membersonic::EXTENSION_NAME, WPCW_membersonic::EXTENSION_ID, WPCW_membersonic::GLUE_VERSION);
 	}
-	
-	
 	
 	/**
 	 * Get the membership levels for this specific membership plugin. (id => array (of details))
@@ -90,7 +72,7 @@ class WPCW_membersonic extends WPCW_Members
 		global $wpdb;
 		$sql = "SELECT * FROM ". WP_SM_MEMBERSHIP_DETAILS;
 		$levelData = $wpdb->get_results($sql, ARRAY_A);		
-	//	print_r($levelData);
+
 		if ($levelData && count($levelData) > 0)
 		{
 			$levelDataStructured = array();
@@ -121,8 +103,36 @@ class WPCW_membersonic extends WPCW_Members
 		// Events called whenever the user levels are changed, which updates the user access.
 		add_action('membersonic_add_user_levels', 		array($this, 'handle_updateUserCourseAccess'), 10, 2);
 	}
-	
 
+	protected function retroactive_assignment($level_ID)
+    {
+    	global $wpdb;
+    	$page = new PageBuilder(false);
+
+    	//Get members associated with $level_ID
+		$SQL = "SELECT user_id FROM " . WP_SM__MEMBER_ASSOC . " WHERE wp_membership_id =" . $level_ID . " AND is_active = 1";
+		$members = $wpdb->get_results($SQL, ARRAY_A);
+
+		if (count($members) > 0){
+			//Enroll members into of level
+			foreach ($members as $member){
+				// Get user levels
+				$SQL = "SELECT wp_membership_id FROM " . WP_SM__MEMBER_ASSOC . " WHERE user_id =" . $member['user_id'] . " AND is_active = 1";
+				$userLevels = $wpdb->get_results($SQL, ARRAY_N);
+				// Over to the parent class to handle the sync of data.
+				parent::handle_courseSync($member['user_id'], $userLevels);
+			}
+
+
+		$page->showMessage(__('All members were successfully retroactively enrolled into the selected courses.', 'wp_courseware'));
+            
+        return;
+
+		}else {
+            $page->showMessage(__('No existing customers found for the specified product.', 'wp_courseware'));
+        }
+    }
+	
 	/**
 	 * Function just for handling the membership callback, to interpret the parameters
 	 * for the class to take over.
@@ -136,7 +146,7 @@ class WPCW_membersonic extends WPCW_Members
 		// Get all user levels, for this user $id.
 		 if($id != '')
 				{
-				$sql       = "SELECT wp_membership_id FROM " . WP_SM__MEMBER_ASSOC . "  WHERE user_id =" . $id;
+				$sql       = "SELECT wp_membership_id FROM " . WP_SM__MEMBER_ASSOC . "  WHERE user_id =" . $id ." AND is_active = 1";
 				$userLevels = $wpdb->get_results($sql, ARRAY_N);
 				
 				}  

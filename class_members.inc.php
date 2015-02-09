@@ -34,7 +34,7 @@ if (!class_exists('WPCW_Members'))
 		
 		
 		/**
-		 * Initialise the membership plugin.
+		 * Initialize the membership plugin.
 		 */
 		function __construct($extensionName, $extensionID, $version)
 		{
@@ -121,7 +121,7 @@ if (!class_exists('WPCW_Members'))
 		{
 			// Show a nice summary of what level is being edited.
 			printf('<div id="wpcw_member_level_name_title">%s</div>', 
-				sprintf(__('Editing permissions for <b>%s</b> level with <b>%s</b>:', 'wp_courseware'), $levelDetails['name'], $this->extensionName)
+				sprintf(__('Editing permissions for <b>%s</b> product with <b>%s</b>:', 'wp_courseware'), $levelDetails['name'], $this->extensionName)
 			);
 			
 			// Get a list of course IDs that exist
@@ -140,10 +140,22 @@ if (!class_exists('WPCW_Members'))
 			$form->setSubmitLabel(__('Save Changes', 'wp_courseware'));
 			
 			// Create list of courses using checkboxes (max of 2 columns)
-			$elem = new FormElement('level_courses', __('Courses user can access with this product.', 'wp_courseware'), false);
+			$elem = new FormElement('level_courses', __('Courses user can access with this product', 'wp_courseware'), false);
 			$elem->setTypeAsCheckboxList($courses);
 			$elem->checkboxListCols = 2;
 			$form->addFormElement($elem);
+
+			// Create retroactive option
+			$elem = new FormElement('retroactive_assignment', __('Do you want to retroactively assign these courses to current customers?', 'wp_courseware'), true);
+			$elem->setTypeAsRadioButtons(array(
+		'Yes'				=> __('Yes', 'wp_courseware'),
+		'No'				=> __('No', 'wp_courseware'),	
+		));
+			$form->addFormElement($elem);
+			
+			$form->setDefaultValues(array(
+			'retroactive_assignment' => 'No'
+			));
 			
 						
 			// Normally would check for errors too, but there's not a lot to check here.
@@ -151,7 +163,8 @@ if (!class_exists('WPCW_Members'))
 			{
 				if ($form->formValid())
 				{
-					$mapplingList = $form->getValue('level_courses');				
+					$mapplingList = $form->getValue('level_courses');
+
 									
 					global $wpdb, $wpcwdb;
 					$wpdb->show_errors();
@@ -173,8 +186,20 @@ if (!class_exists('WPCW_Members'))
 								(course_id, member_level_id)  
 								VALUES (%d, %s)
 							", $courseID, $levelDetails['id']));
-						}												
+
+						}
+						
 					}
+
+					// Get retroactive selection
+					$retroactive_assignment = $form->getValue('retroactive_assignment');	
+
+					// Call the retroactive assignment function passing the member level ID 
+					if ($retroactive_assignment == 'Yes' && count($mapplingList) >= 0){
+						$level_ID = $levelDetails['id'];
+						$this->retroactive_assignment($level_ID);
+						//$page->showMessage(__('All members were successfully retroactively enrolled into the selected courses.', 'wp_courseware'));
+					}					
 					
 					// Show a success message.
 					$page->showMessage(
@@ -183,8 +208,6 @@ if (!class_exists('WPCW_Members'))
 					);
 				
 				} // if ($form->formValid())
-
-				
 				
 			} // if ($form->formSubmitted()
 			
@@ -383,7 +406,7 @@ if (!class_exists('WPCW_Members'))
 		 */
 		public function showToolNotDetectedMessage()
 		{
-			printf('<div class="error"><p><b>%s - %s %s:</b> %s</p></div>', 'WP Courseware', $this->extensionName, __('extension', 'wp_courseware'), 
+			printf('<div class="error"><p><b>%s - %s %s:</b> %s</p></div>', 'WP Courseware', $this->extensionName, __('addon', 'wp_courseware'), 
 				sprintf(__('The %s plugin has not been detected. Is it installed and activated?', 'wp_courseware'), $this->extensionName)
 			);
 		}
@@ -423,7 +446,7 @@ if (!class_exists('WPCW_Members'))
 				__('New users given access based on', 'wp_courseware'), 
 				admin_url('admin.php?page=' . $this->extensionID),
 				$this->extensionName,
-				__('level', 'wp_courseware'));
+				__('product', 'wp_courseware'));
 		}
 		
 		/**
