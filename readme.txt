@@ -19,7 +19,7 @@ The MemberSonic Addon for WP Courseware will add full integration with WP Course
 With this addon, you will be able to create a fully automated LMS system which you can sell online, or if you choose to run a free online course, you can do so with ease.
 
 = MemberSonicship Plugin Integration with WP Courseware Plugin =
-[youtube http://www.youtube.com/watch?v=DR8aqXsv8UM]
+[youtube http://www.youtube.com/watch?v=kvpef9K4l0I]
 
 = Basic Configuration Steps =
 1. Create a course with WP Courseware and add module(s), unit(s), and quiz(zes)
@@ -32,14 +32,13 @@ With this addon, you will be able to create a fully automated LMS system which y
 = Check out Fly Plugins =
 For more info about Fly Plugins Free and Premium Plugins, check out the following links:
 
-* [WP Courseware LMS plugin for WordPress](http://flyplugins.com/wp-courseware-premium-wordpress-plugin/) - The best LMS online for WordPress.
-* [S3 Media Maestro](http://www.s3mediamaestro.com/) - The best HTML 5 secure media player for WordPress that works hand in hand with Amazon S3.
-* Other [Fly PluginsWordPress Plugins](http://flyplugins.com) by Fly Plugins.
-* Follow Fly Plugins on [Facebook](http://flyplugins.com/facebook) 
+* [WP Courseware LMS plugin for WordPress](http://wpcourseware.com/) - The best LMS online for WordPress.
+* [S3 Media Maestro](http://s3mediamaestro.com/) - The best HTML 5 secure media player for WordPress that works hand in hand with Amazon S3.
+* Other [Fly Plugins](http://flyplugins.com) by Fly Plugins.
+* Follow Fly Plugins on [Facebook](http://facebook.com/flyplugins) 
 * Check out the Fly Plugins [YouTube](http://www.youtube.com/flyplugins) channel.
-* See documentation on our [Codex](http://flyplugins.com/codex) site.
 
-= NOTE - This is not the actual membership pluigin. =
+= NOTE - This is not the actual membership plugin. =
 
 == Installation ==
 
